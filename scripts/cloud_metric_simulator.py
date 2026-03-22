@@ -39,7 +39,7 @@ def send_metrics(metrics: dict[str, float]) -> None:
     try:
         response = requests.post(API_URL, json=metrics, headers=headers, timeout=10)
         if 200 <= response.status_code < 300:
-            print("Metric sent successfully")
+            print("Metrics sent")
         else:
             print(f"Failed to send metric: {response.status_code} {response.text}")
     except requests.RequestException as exc:
@@ -54,7 +54,7 @@ def main() -> None:
     while True:
         metric_data, is_anomaly = generate_metrics()
         if is_anomaly:
-            print("Anomaly simulated")
+            print("Anomaly triggered")
 
         send_metrics(metric_data)
         time.sleep(SLEEP_SECONDS)

@@ -1,7 +1,5 @@
 from typing import Any
 
-from app.services.ai_decision_engine import process_incident
-
 
 def detect_anomaly(metric_data: dict[str, Any]) -> dict[str, Any]:
 	alerts: list[str] = []
@@ -49,14 +47,4 @@ def detect_anomaly(metric_data: dict[str, Any]) -> dict[str, Any]:
 
 
 def analyze_metric(metric_data: dict[str, Any]) -> dict[str, Any]:
-	anomaly_result = detect_anomaly(metric_data)
-	if not anomaly_result["is_anomaly"]:
-		return anomaly_result
-
-	ai_result = process_incident(metric_data, anomaly_result["alerts"])
-	return {
-		**anomaly_result,
-		"severity": ai_result["severity"],
-		"sla_risk_score": ai_result["sla_risk_score"],
-		"ai_action": ai_result["ai_action"],
-	}
+	return detect_anomaly(metric_data)

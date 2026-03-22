@@ -15,9 +15,17 @@ class IncidentRecord(BaseModel):
 	tenant_id: str
 	metric_id: str
 	alerts: list[str]
+	root_cause: str
 	severity: Literal["warning", "critical"]
 	sla_risk_score: int
-	ai_action: Literal["restart_service", "scale_resources", "throttle_traffic"]
+	risk_level: Literal["LOW", "MEDIUM", "HIGH"]
+	ai_action: Literal[
+		"restart_service",
+		"scale_resources",
+		"throttle_traffic",
+		"optimize_load",
+		"monitor",
+	]
 	status: Literal["open", "resolved"]
 	created_at: datetime
 	resolved_at: datetime | None = None
