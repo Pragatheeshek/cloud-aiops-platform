@@ -41,6 +41,7 @@ export interface MetricPoint {
 
 export interface MetricTrendPoint {
   time: string;
+  timestamp: number;
   cpu: number;
   memory: number;
   network: number;

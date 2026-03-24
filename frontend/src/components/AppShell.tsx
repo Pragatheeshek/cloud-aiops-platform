@@ -8,12 +8,25 @@ export default function AppShell() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const title =
-    location.pathname === "/incidents"
-      ? "Incidents"
-      : location.pathname === "/metrics"
-        ? "Metrics"
-        : "Dashboard";
+  const titleByPath: Array<{ match: (path: string) => boolean; title: string }> = [
+    { match: (path) => path === "/overview", title: "Overview" },
+    { match: (path) => path === "/dashboard", title: "Live Dashboard" },
+    { match: (path) => path === "/incidents", title: "Incidents" },
+    { match: (path) => path === "/incidents/active", title: "Active Incidents" },
+    { match: (path) => path === "/incidents/resolved", title: "Resolved Incidents" },
+    { match: (path) => path === "/ai-decisions", title: "AI Decisions" },
+    { match: (path) => path === "/metrics", title: "Metrics" },
+    { match: (path) => path === "/metrics/cpu", title: "CPU Usage" },
+    { match: (path) => path === "/metrics/memory", title: "Memory Usage" },
+    { match: (path) => path === "/metrics/network", title: "Network Traffic" },
+    { match: (path) => path === "/metrics/error", title: "Error Rate" },
+    { match: (path) => path === "/sla-monitor", title: "SLA Monitor" },
+    { match: (path) => path === "/timeline", title: "Incident Timeline" },
+    { match: (path) => path === "/system-health", title: "System Health" },
+    { match: (path) => path === "/settings", title: "Settings" },
+  ];
+
+  const title = titleByPath.find((entry) => entry.match(location.pathname))?.title ?? "Cloud iOS";
 
   const logout = () => {
     clearToken();
@@ -22,19 +35,10 @@ export default function AppShell() {
 
   return (
     <div className="min-h-screen bg-bg text-text">
-      <Sidebar />
+      <Sidebar onLogout={logout} />
       <div className="ml-72 min-h-screen">
         <Topbar title={title} />
         <main className="animate-floatin p-8">
-          <div className="mb-4 flex justify-end">
-            <button
-              type="button"
-              onClick={logout}
-              className="rounded-2xl border border-slate-700 bg-slate-900 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-primary/55 hover:text-primary"
-            >
-              Logout
-            </button>
-          </div>
           <Outlet />
         </main>
       </div>

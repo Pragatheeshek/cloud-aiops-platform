@@ -1,19 +1,45 @@
-import { Activity, AlertTriangle, LayoutDashboard } from "lucide-react";
+import {
+	Activity,
+	AlertTriangle,
+	Bot,
+	CheckCircle2,
+	Gauge,
+	HeartPulse,
+	LayoutDashboard,
+	ListOrdered,
+	LogOut,
+	Radar,
+	Settings,
+	ShieldAlert,
+} from "lucide-react";
 import { NavLink } from "react-router-dom";
 
+import BrandLogo from "./BrandLogo";
+
 const menuItems = [
-	{ to: "/dashboard", title: "Dashboard", icon: LayoutDashboard },
+	{ to: "/overview", title: "Overview", icon: LayoutDashboard },
+	{ to: "/dashboard", title: "Live Dashboard", icon: Radar },
 	{ to: "/incidents", title: "Incidents", icon: AlertTriangle },
+	{ to: "/incidents/active", title: "Active Incidents", icon: ShieldAlert },
+	{ to: "/incidents/resolved", title: "Resolved Incidents", icon: CheckCircle2 },
+	{ to: "/ai-decisions", title: "AI Decisions", icon: Bot },
 	{ to: "/metrics", title: "Metrics", icon: Activity },
+	{ to: "/sla-monitor", title: "SLA Monitor", icon: Gauge },
+	{ to: "/timeline", title: "Incident Timeline", icon: ListOrdered },
+	{ to: "/system-health", title: "System Health", icon: HeartPulse },
+	{ to: "/settings", title: "Settings", icon: Settings },
 ];
 
-export default function Sidebar() {
+type SidebarProps = {
+	onLogout: () => void;
+};
+
+export default function Sidebar({ onLogout }: SidebarProps) {
 	return (
 		<aside className="fixed left-0 top-0 z-40 h-screen w-72 border-r border-slate-800/80 bg-card/95 p-6 backdrop-blur-md">
-			<h1 className="text-2xl font-bold tracking-tight text-text">Cloud Orchestrator</h1>
-			<p className="mt-1 text-xs uppercase tracking-[0.2em] text-slate-500">AI-Driven Control Plane</p>
+			<BrandLogo size={42} withWordmark />
 
-			<nav className="mt-10 space-y-2">
+			<nav className="mt-10 max-h-[72vh] space-y-2 overflow-auto pr-1 scrollbar-thin">
 				{menuItems.map(({ to, title, icon: Icon }) => (
 					<NavLink
 						key={to}
@@ -31,6 +57,17 @@ export default function Sidebar() {
 					</NavLink>
 				))}
 			</nav>
+
+			<div className="absolute bottom-6 left-6 right-6">
+				<button
+					type="button"
+					onClick={onLogout}
+					className="inline-flex w-full items-center justify-center gap-2 rounded-2xl border border-slate-700 bg-slate-900 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:-translate-y-0.5 hover:border-primary/55 hover:text-primary"
+				>
+					<LogOut size={16} />
+					Logout
+				</button>
+			</div>
 		</aside>
 	);
 }

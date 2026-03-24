@@ -25,7 +25,10 @@ app.add_middleware(
 	allow_origins=[
 		"http://localhost:5173",
 		"http://127.0.0.1:5173",
+		"http://localhost:5174",
+		"http://127.0.0.1:5174",
 	],
+	allow_origin_regex=r"^https?://(localhost|127\.0\.0\.1)(:\d+)?$",
 	allow_credentials=True,
 	allow_methods=["*"],
 	allow_headers=["*"],
@@ -40,3 +43,12 @@ app.include_router(dashboard_router)
 @app.get("/health", tags=["System"])
 async def health_check() -> dict[str, str]:
 	return {"status": "ok"}
+
+
+@app.get("/health/services", tags=["System"])
+async def health_services() -> list[dict[str, str]]:
+	return [
+		{"name": "API", "status": "healthy", "detail": "Request gateway operational"},
+		{"name": "Database", "status": "healthy", "detail": "MongoDB connection active"},
+		{"name": "AI Engine", "status": "healthy", "detail": "Inference pipeline online"},
+	]

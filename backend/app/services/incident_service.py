@@ -1,8 +1,11 @@
 from app.db.collections import get_incidents_collection
 from app.schemas.incident_schema import DashboardStats, IncidentRecord
+from app.services.bootstrap_service import ensure_tenant_bootstrap_data
 
 
 async def list_incidents_by_tenant(tenant_id: str) -> list[IncidentRecord]:
+	await ensure_tenant_bootstrap_data(tenant_id)
+
 	incidents_collection = get_incidents_collection()
 	incident_docs = (
 		await incidents_collection.find({"tenant_id": tenant_id}).sort("created_at", -1).to_list(length=500)
@@ -28,6 +31,8 @@ async def list_incidents_by_tenant(tenant_id: str) -> list[IncidentRecord]:
 
 
 async def get_dashboard_stats(tenant_id: str) -> DashboardStats:
+	await ensure_tenant_bootstrap_data(tenant_id)
+
 	incidents_collection = get_incidents_collection()
 	incident_docs = await incidents_collection.find({"tenant_id": tenant_id}).to_list(length=2000)
 

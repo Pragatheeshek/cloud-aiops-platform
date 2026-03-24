@@ -7,6 +7,7 @@ from app.db.collections import get_incidents_collection, get_metrics_collection
 from app.schemas.metric_schema import MetricIn, MetricRecord
 from app.services.anomaly_service import analyze_metric
 from app.services.auto_remediation_service import remediate_incident
+from app.services.bootstrap_service import ensure_tenant_bootstrap_data
 from app.services.decision_service import decide_action
 from app.services.rca_service import analyze_root_cause
 from app.services.sla_service import calculate_sla_risk
@@ -58,6 +59,8 @@ async def ingest_metric(tenant_id: str, payload: MetricIn) -> MetricRecord:
 
 
 async def get_latest_metric_by_tenant(tenant_id: str) -> MetricRecord:
+	await ensure_tenant_bootstrap_data(tenant_id)
+
 	metrics_collection = get_metrics_collection()
 	metric_doc = await metrics_collection.find_one({"tenant_id": tenant_id}, sort=[("timestamp", -1)])
 
@@ -68,3 +71,12 @@ async def get_latest_metric_by_tenant(tenant_id: str) -> MetricRecord:
 		)
 
 	return MetricRecord(**metric_doc)
+
+
+async def list_metrics_by_tenant(tenant_id: str, limit: int = 120) -> list[MetricRecord]:
+	await ensure_tenant_bootstrap_data(tenant_id)
+
+	metrics_collection = get_metrics_collection()
+	metric_docs = await metrics_collection.find({"tenant_id": tenant_id}).sort("timestamp", -1).to_list(length=limit)
+
+	return [MetricRecord(**doc) for doc in metric_docs]

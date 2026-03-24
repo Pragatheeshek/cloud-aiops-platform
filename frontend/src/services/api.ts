@@ -1,7 +1,17 @@
 import axios from "axios";
 
-import { getToken } from "../store/authStore";
+import { clearToken, getToken } from "../store/authStore";
 import type { DashboardStats, Incident, LoginResponse, MetricPoint } from "../types";
+
+export type HealthStatus = {
+	status: string;
+};
+
+export type ServiceHealthStatus = {
+	name: string;
+	status: "healthy" | "degraded" | "critical";
+	detail: string;
+};
 
 const api = axios.create({
 	baseURL: "http://localhost:8000",
@@ -15,6 +25,23 @@ api.interceptors.request.use((config) => {
 	}
 	return config;
 });
+
+api.interceptors.response.use(
+	(response) => response,
+	(error: unknown) => {
+		if (axios.isAxiosError(error) && error.response?.status === 401) {
+			clearToken();
+			if (typeof window !== "undefined") {
+				const currentPath = window.location.pathname;
+				if (currentPath !== "/login" && currentPath !== "/register") {
+					window.location.href = "/login";
+				}
+			}
+		}
+
+		return Promise.reject(error);
+	},
+);
 
 function normalizeIncident(raw: Record<string, unknown>): Incident {
 	const status = String(raw.status ?? "open").toLowerCase();
@@ -112,6 +139,14 @@ export async function fetchLatestMetric(): Promise<MetricPoint> {
 		const response = await api.get<MetricPoint>("/metrics/latest");
 		return response.data;
 	} catch (latestError: unknown) {
+		if (axios.isAxiosError(latestError)) {
+			const status = latestError.response?.status;
+			// Only try legacy fallback endpoint when /metrics/latest is genuinely missing.
+			if (status !== 404) {
+				throw withApiMessage(latestError, "Failed to fetch metrics");
+			}
+		}
+
 		try {
 			const response = await api.get<MetricPoint[] | MetricPoint>("/metrics");
 			if (Array.isArray(response.data)) {
@@ -121,9 +156,27 @@ export async function fetchLatestMetric(): Promise<MetricPoint> {
 				return response.data[0];
 			}
 			return response.data;
-		} catch (metricsError: unknown) {
-			throw withApiMessage(metricsError ?? latestError, "Failed to fetch metrics");
+		} catch {
+			throw withApiMessage(latestError, "Failed to fetch metrics");
 		}
+	}
+}
+
+export async function fetchHealth(): Promise<HealthStatus> {
+	try {
+		const response = await api.get<HealthStatus>("/health");
+		return response.data;
+	} catch (error: unknown) {
+		throw withApiMessage(error, "Failed to fetch backend health");
+	}
+}
+
+export async function fetchServiceHealth(): Promise<ServiceHealthStatus[]> {
+	try {
+		const response = await api.get<ServiceHealthStatus[]>("/health/services");
+		return response.data;
+	} catch (error: unknown) {
+		throw withApiMessage(error, "Failed to fetch service health");
 	}
 }
 

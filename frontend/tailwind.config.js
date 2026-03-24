@@ -3,20 +3,24 @@ export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["Plus Jakarta Sans", "sans-serif"],
+        display: ["Outfit", "sans-serif"],
+      },
       colors: {
-        bg: "#0B1220",
-        card: "#111827",
-        primary: "#3B82F6",
-        accent: "#22D3EE",
-        success: "#10B981",
-        warning: "#F59E0B",
-        danger: "#EF4444",
-        text: "#E5E7EB",
+        bg: "#070B1A",
+        card: "#121A2E",
+        primary: "#4F7CFF",
+        accent: "#18E0C7",
+        success: "#22C55E",
+        warning: "#FFB347",
+        danger: "#FF5D7A",
+        text: "#EAF0FF",
       },
       boxShadow: {
-        panel: "0 20px 45px rgba(2, 6, 23, 0.35)",
-        glowSuccess: "0 0 0 1px rgba(16,185,129,0.35), 0 0 26px rgba(16,185,129,0.22)",
-        glowDanger: "0 0 0 1px rgba(239,68,68,0.35), 0 0 26px rgba(239,68,68,0.22)",
+        panel: "0 24px 50px rgba(3, 8, 24, 0.5)",
+        glowSuccess: "0 0 0 1px rgba(34,197,94,0.4), 0 0 30px rgba(34,197,94,0.24)",
+        glowDanger: "0 0 0 1px rgba(255,93,122,0.42), 0 0 30px rgba(255,93,122,0.26)",
       },
       animation: {
         floatin: "floatin 500ms ease-out",

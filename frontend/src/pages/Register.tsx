@@ -2,6 +2,7 @@ import { type FormEvent, useState } from "react";
 import { isAxiosError } from "axios";
 import { Link, useNavigate } from "react-router-dom";
 
+import AuthLogo from "../components/AuthLogo";
 import { register } from "../services/auth";
 
 function getRegisterErrorMessage(error: unknown): string {
@@ -60,6 +61,7 @@ export default function Register() {
 	return (
 		<div className="flex min-h-screen items-center justify-center px-4">
 			<div className="w-full max-w-md rounded-2xl border border-slate-700 bg-card/90 p-8 shadow-panel backdrop-blur">
+				<AuthLogo subtitle="Create your tenant workspace" />
 				<h1 className="mb-2 text-3xl font-semibold">Create Tenant Account</h1>
 				<p className="mb-6 text-sm text-slate-300">Register your cloud provider workspace credentials.</p>
 

@@ -22,7 +22,11 @@ function statusClass(value: string) {
 
 export default function IncidentList({ incidents, emptyText = "No incidents found" }: IncidentListProps) {
 	if (!incidents.length) {
-		return <p className="rounded-2xl border border-slate-800 bg-card p-4 text-sm text-slate-400">{emptyText}</p>;
+		return (
+			<p className="rounded-2xl border border-warning/25 bg-[linear-gradient(140deg,rgba(30,41,59,0.82),rgba(15,23,42,0.7))] p-4 text-sm text-slate-300">
+				{emptyText}
+			</p>
+		);
 	}
 
 	return (
@@ -40,7 +44,7 @@ export default function IncidentList({ incidents, emptyText = "No incidents foun
 							animate={{ opacity: 1, y: 0 }}
 							exit={{ opacity: 0, y: -10 }}
 							transition={{ duration: 0.28 }}
-							className="rounded-2xl border border-slate-800 bg-card p-4 shadow-panel"
+							className="rounded-2xl border border-warning/20 bg-[linear-gradient(145deg,rgba(17,24,39,0.9),rgba(30,41,59,0.74))] p-4 shadow-panel"
 						>
 							<div className="flex flex-wrap items-start justify-between gap-3">
 								<div>

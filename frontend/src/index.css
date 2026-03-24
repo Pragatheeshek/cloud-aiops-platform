@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Sora:wght@400;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap");
 
 @tailwind base;
 @tailwind components;
@@ -11,19 +11,21 @@
 body {
   margin: 0;
   min-height: 100vh;
-  font-family: "Space Grotesk", sans-serif;
+  font-family: "Plus Jakarta Sans", sans-serif;
   background:
-    radial-gradient(800px 500px at 92% -8%, rgba(34, 211, 238, 0.12), transparent),
-    radial-gradient(900px 520px at -8% 18%, rgba(59, 130, 246, 0.12), transparent),
-    linear-gradient(180deg, #0b1220 0%, #0b1220 100%);
-  color: #e5e7eb;
+    radial-gradient(860px 520px at 92% -8%, rgba(24, 224, 199, 0.16), transparent),
+    radial-gradient(980px 560px at -8% 16%, rgba(79, 124, 255, 0.2), transparent),
+    radial-gradient(760px 460px at 55% 112%, rgba(255, 179, 71, 0.12), transparent),
+    linear-gradient(180deg, #070b1a 0%, #090f22 100%);
+  color: #eaf0ff;
 }
 
 h1,
 h2,
 h3,
 h4 {
-  font-family: "Sora", sans-serif;
+  font-family: "Outfit", sans-serif;
+  letter-spacing: 0.01em;
 }
 
 * {
@@ -31,21 +33,23 @@ h4 {
 }
 
 .panel-soft {
-  background: linear-gradient(150deg, rgba(17, 24, 39, 0.98), rgba(13, 20, 36, 0.95));
-  border: 1px solid rgba(55, 65, 81, 0.65);
-  box-shadow: 0 24px 48px rgba(2, 8, 23, 0.4);
+  background:
+    radial-gradient(circle at 85% 0%, rgba(24, 224, 199, 0.1), transparent 42%),
+    linear-gradient(155deg, rgba(18, 26, 46, 0.96), rgba(10, 16, 34, 0.94));
+  border: 1px solid rgba(95, 113, 151, 0.36);
+  box-shadow: 0 20px 45px rgba(3, 8, 24, 0.52), inset 0 1px 0 rgba(159, 182, 255, 0.06);
 }
 
 .soft-grid {
   background-image:
-    linear-gradient(rgba(148, 163, 184, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+    linear-gradient(rgba(148, 163, 184, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(148, 163, 184, 0.07) 1px, transparent 1px);
   background-size: 24px 24px;
 }
 
 .scrollbar-thin {
   scrollbar-width: thin;
-  scrollbar-color: rgba(75, 85, 99, 0.9) transparent;
+  scrollbar-color: rgba(95, 113, 151, 0.9) transparent;
 }
 
 .scrollbar-thin::-webkit-scrollbar {
@@ -54,6 +58,6 @@ h4 {
 }
 
 .scrollbar-thin::-webkit-scrollbar-thumb {
-  background: rgba(75, 85, 99, 0.9);
+  background: linear-gradient(180deg, rgba(79, 124, 255, 0.9), rgba(24, 224, 199, 0.9));
   border-radius: 9999px;
 }
