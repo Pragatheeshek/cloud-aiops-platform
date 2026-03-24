@@ -1,6 +1,8 @@
 from datetime import datetime, timezone
 from uuid import uuid4
 
+from fastapi import HTTPException, status
+
 from app.db.collections import get_incidents_collection, get_metrics_collection
 from app.schemas.metric_schema import MetricIn, MetricRecord
 from app.services.anomaly_service import analyze_metric
@@ -50,6 +52,19 @@ async def ingest_metric(tenant_id: str, payload: MetricIn) -> MetricRecord:
 		await remediate_incident(
 			incident_id=str(insert_result.inserted_id),
 			ai_action=incident_doc["ai_action"],
+		)
+
+	return MetricRecord(**metric_doc)
+
+
+async def get_latest_metric_by_tenant(tenant_id: str) -> MetricRecord:
+	metrics_collection = get_metrics_collection()
+	metric_doc = await metrics_collection.find_one({"tenant_id": tenant_id}, sort=[("timestamp", -1)])
+
+	if metric_doc is None:
+		raise HTTPException(
+			status_code=status.HTTP_404_NOT_FOUND,
+			detail="No metrics available for this tenant",
 		)
 
 	return MetricRecord(**metric_doc)
